@@ -3,16 +3,16 @@ const { sequelize } = require('../sequelize/sequelize');
 
 
 
-const TipoDocumento=sequelize.define('TipoDocumento',{
+const Sexo=sequelize.define('Sexo',{
     id: {
         type: DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true,
-      },
+    },
     descripcion: DataTypes.STRING
 },{
-    tableName: 'TipoDocumento',
+    tableName: 'Sexo',
     timestamps: false 
 })
 
-module.exports=TipoDocumento
+module.exports=Sexo

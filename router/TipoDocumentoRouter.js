@@ -1,8 +1,10 @@
 // host + /api/tipodocumento
 const {Router}=require('express')
-const { findall } = require('../controller/TipoDocumentoController')
+const {  findallTipoDocumento, createTipoDocumento } = require('../controller/tipoDocumentoController')
+
 const router=Router()
 
-router.get("/",findall)
+router.get("/",findallTipoDocumento)
+      .post("/",createTipoDocumento)
 
 module.exports=router

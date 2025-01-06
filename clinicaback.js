@@ -5,7 +5,7 @@ const app = express()
 
 //DIRECTORIO PUBLICO
 app.use(express.static('public'));
-
+app.use(express.json())
 sequelize.sync()
   .then(() => {
     console.log('Tablas sincronizadas con la base de datos');
