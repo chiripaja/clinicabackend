@@ -7,7 +7,7 @@ const Pacientes=sequelize.define('Pacientes',{
         type: DataTypes.INTEGER,
         primaryKey: true
       },
-      Descripcion: DataTypes.STRING
+    Descripcion: DataTypes.STRING
 },{
     tableName: 'Pacientes',
     timestamps: false 
