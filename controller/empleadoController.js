@@ -28,7 +28,7 @@ const findEmpleadoById = async (req, res = response) => {
 
 // Crear un nuevo empleado
 const createEmpleado = async (req, res = response) => {
-    const { apellidoPaterno, apellidoMaterno, primerNombre, segundoNombre, usuario, clave, dni, tipoDocumento, fechaNacimiento } = req.body;
+    const { apellidoPaterno, apellidoMaterno, primerNombre, segundoNombre, usuario, clave, dni, idDocumento,idSexo, fechaNacimiento,tipoEmpleado } = req.body;
     try {
         const nuevoEmpleado = await Empleado.create({
             apellidoPaterno,
@@ -38,8 +38,10 @@ const createEmpleado = async (req, res = response) => {
             usuario,
             clave,
             dni,
-            tipoDocumento,
+            idDocumento,
+            idSexo,
             fechaNacimiento,
+            tipoEmpleado,
             estado: 1,
         });
         res.status(201).json({ success: true, message: 'Empleado creado exitosamente.', empleado: nuevoEmpleado });
@@ -51,14 +53,14 @@ const createEmpleado = async (req, res = response) => {
 // Actualizar un empleado por ID
 const updateEmpleado = async (req, res = response) => {
     const { id } = req.params;
-    const { apellidoPaterno, apellidoMaterno, primerNombre, segundoNombre, usuario, clave, dni, tipoDocumento, fechaNacimiento } = req.body;
+    const { apellidoPaterno, apellidoMaterno, primerNombre, segundoNombre, usuario, clave, dni, idDocumento,idSexo, fechaNacimiento,tipoEmpleado } = req.body;
     try {
         const empleado = await Empleado.findOne({ where: { id_empleado: id, estado: 1 } });
         if (!empleado) {
             return res.status(404).json({ success: false, message: 'Empleado no encontrado o inactivo.' });
         }
         await Empleado.update(
-            { apellidoPaterno, apellidoMaterno, primerNombre, segundoNombre, usuario, clave, dni, tipoDocumento, fechaNacimiento },
+            { apellidoPaterno, apellidoMaterno, primerNombre, segundoNombre, usuario, clave, dni, idDocumento,idSexo, fechaNacimiento,tipoEmpleado },
             { where: { id_empleado: id } }
         );
         res.status(200).json({ success: true, message: 'Empleado actualizado exitosamente.' });

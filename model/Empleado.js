@@ -16,9 +16,11 @@ const Empleado=sequelize.define('Empleado',{
     usuario: DataTypes.STRING,
     clave: DataTypes.STRING,
     dni: DataTypes.STRING,
-    tipoDocumento: DataTypes.INTEGER,
+    idDocumento: DataTypes.INTEGER,
+    idSexo: DataTypes.INTEGER,
     fechaNacimiento: DataTypes.DATE,
-    estado: {
+    tipoEmpleado: DataTypes.INTEGER,
+    estado: { 
         type: DataTypes.TINYINT(1), 
         allowNull: false,
         defaultValue: 1, 
