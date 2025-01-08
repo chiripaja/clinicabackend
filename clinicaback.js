@@ -22,6 +22,7 @@ app.use('/api/proveedor',require('./router/proveedorRoutes'));
 app.use('/api/fuentefinanciamiento',require('./router/FuenteFinanciamientoRouter'));
 app.use('/api/empleado',require('./router/EmpleadoRoutes'));
 app.use('/api/tiposgeneral',require('./router/TiposGeneralRouter'));
+app.use('/api/factCatalogoBienesInsumosRoutes',require('./router/factCatalogoBienesInsumosRoutes'));
 app.listen(process.env.PORT, () => {
   console.log(`Example app listening on port ${process.env.PORT}`)
 })
