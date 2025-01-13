@@ -9,11 +9,12 @@ const Medicamentos = sequelize.define('Medicamentos', {
         primaryKey: true,
         autoIncrement: true,
     },
-    nombre: DataTypes.INTEGER,
-    descripcion: DataTypes.INTEGER,
-    codigo: DataTypes.STRING,
-    unidad_medida: DataTypes.INTEGER,
-    precio_unitario: DataTypes.DATE
+    nombre: DataTypes.STRING,
+    descripcion: DataTypes.STRING,
+    presentacion : DataTypes.STRING,
+    unidad_medida: DataTypes.STRING,
+    precio_compra: DataTypes.DOUBLE,
+    precio_venta : DataTypes.DOUBLE
 }, {
     tableName: 'Medicamentos',
     timestamps: false

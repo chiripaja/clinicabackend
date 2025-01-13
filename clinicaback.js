@@ -23,6 +23,10 @@ app.use('/api/fuentefinanciamiento',require('./router/FuenteFinanciamientoRouter
 app.use('/api/empleado',require('./router/EmpleadoRoutes'));
 app.use('/api/tiposgeneral',require('./router/TiposGeneralRouter'));
 app.use('/api/factCatalogoBienesInsumos',require('./router/factCatalogoBienesInsumosRoutes'));
+app.use('/api/lotes',require('./router/LotesRouter'));
+app.use('/api/medicamentos',require('./router/MedicamentoRouter'));
+app.use('/api/movimientos',require('./router/MovimientoRouter'));
+app.use('/api/stock',require('./router/StockRouter'));
 app.listen(process.env.PORT, () => {
   console.log(`Example app listening on port ${process.env.PORT}`)
 })

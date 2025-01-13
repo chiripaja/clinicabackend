@@ -4,16 +4,16 @@ const { sequelize } = require('../sequelize/sequelize');
 
 
 const Stock = sequelize.define('Stock', {
-    id_lote: {
+    id_stock : {
         type: DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true,
     },
-    stock_actual: DataTypes.INTEGER,
-    stock_minimo: DataTypes.INTEGER,
+    id_medicamento: DataTypes.INTEGER,
+    id_almacen : DataTypes.INTEGER,
+    cantidad_disponible : DataTypes.INTEGER
 }, {
-    tableName: 'Stock',
-    timestamps: false
+    tableName: 'Stock'
 })
 
 module.exports = Stock

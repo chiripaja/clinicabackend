@@ -1,4 +1,4 @@
-const { DataTypes } = require('sequelize');
+const { DataTypes, DOUBLE } = require('sequelize');
 const { sequelize } = require('../sequelize/sequelize');
 
 
@@ -9,16 +9,18 @@ const Movimientos = sequelize.define('Movimientos', {
         primaryKey: true,
         autoIncrement: true,
     },
+    id_medicamento: DataTypes.INTEGER,
     id_lote: DataTypes.INTEGER,
-    tipo_movimiento: DataTypes.STRING,
+    id_almacen: DataTypes.INTEGER,
+    tipo_movimiento: DataTypes.STRING,//'ENTRADA', 'SALIDA', 'AJUSTE'
     cantidad: DataTypes.INTEGER,
-    fecha_movimiento: DataTypes.DATE,
+    precio_venta: DataTypes.DOUBLE,   // Precio de venta en el momento del movimiento
+    precio_compra: DataTypes.DOUBLE,  // Precio de compra en el momento del movimiento
     observaciones: DataTypes.STRING,
     id_proveedor: DataTypes.INTEGER,
-    usuario_responsable: DataTypes.STRING,
+    usuario_responsable: DataTypes.STRING
 }, {
-    tableName: 'Movimientos',
-    timestamps: false
+    tableName: 'Movimientos'
 })
 
 module.exports = Movimientos
