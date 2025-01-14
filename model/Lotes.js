@@ -18,8 +18,7 @@ const Lotes = sequelize.define('Lotes', {
     id_almacen : DataTypes.INTEGER,
     precio_compra_lote:DataTypes.DOUBLE
 }, {
-    tableName: 'Lotes',
-    timestamps: false
+    tableName: 'Lotes'
 })
 
 module.exports = Lotes

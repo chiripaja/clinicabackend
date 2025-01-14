@@ -7,7 +7,6 @@ const {   getAllLotes,
     deleteLote } = require('../controller/lotesController')
 const router=Router()
 
-router.get("/lotes",getAllLotes)
 router.get('/', getAllLotes);
 router.get('/:id', getLoteById);
 router.post('/', createLote);
