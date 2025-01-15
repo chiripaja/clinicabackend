@@ -27,6 +27,9 @@ app.use('/api/lotes',require('./router/LotesRouter'));
 app.use('/api/medicamentos',require('./router/MedicamentoRouter'));
 app.use('/api/movimientos',require('./router/MovimientoRouter'));
 app.use('/api/stock',require('./router/StockRouter'));
+app.use('/api/servicios',require('./router/serviciosRoutes'));
+app.use('/api/atenciones',require('./router/atencionesRoutes'));
+app.use('/api/pacientes',require('./router/pacientesRoutes'));
 app.listen(process.env.PORT, () => {
   console.log(`Example app listening on port ${process.env.PORT}`)
 })

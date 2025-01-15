@@ -1,15 +1,32 @@
 const { DataTypes } = require('sequelize');
-const sequelize = require('../sequilize/sequilize');
+const { sequelize } = require('../sequelize/sequelize');
 
 
 const Pacientes=sequelize.define('Pacientes',{
-    IdTipoSexo: {
+    IdPaciente: {
         type: DataTypes.INTEGER,
         primaryKey: true
       },
-    Descripcion: DataTypes.STRING
+      
+      IdDocIdentidad: DataTypes.INTEGER,
+      ApellidoPaterno: DataTypes.STRING,
+      ApellidoMaterno: DataTypes.STRING,
+      PrimerNombre: DataTypes.STRING,
+      SegundoNombre: DataTypes.STRING,
+      FechaNacimiento: DataTypes.DATE,
+      NroDocumento: {
+        type: DataTypes.STRING,
+        unique: true, // Asegura que sea único
+      },
+      Telefono: DataTypes.STRING,
+      DireccionDomicilio: DataTypes.STRING,
+      IdTipoSexo: DataTypes.INTEGER,
+      IdEstadoCivil: DataTypes.INTEGER,
+      IdPaisDomicilio: DataTypes.INTEGER,
+      IdDistritoDomicilio: DataTypes.INTEGER,
+      idestadopaciente:DataTypes.INTEGER
 },{
-    tableName: 'Pacientes',
-    timestamps: false 
+    tableName: 'Pacientes'
 })
 
+module.exports = Pacientes

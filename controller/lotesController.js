@@ -1,4 +1,4 @@
-  // Importa el modelo de Lotes
+// Importa el modelo de Lotes
 
 const Lotes = require("../model/Lotes");
 
@@ -29,7 +29,7 @@ const getLoteById = async (req, res) => {
 // Crear un nuevo lote
 const createLote = async (req, res) => {
     const { id_medicamento, numero_lote, fecha_fabricacion, fecha_vencimiento, cantidad_inicial, cantidad_actual, id_almacen, precio_compra_lote } = req.body;
-    
+
     try {
         const newLote = await Lotes.create({
             id_medicamento,
@@ -50,14 +50,19 @@ const createLote = async (req, res) => {
 
 // Actualizar un lote por ID
 const updateLote = async (req, res) => {
-    const { id_lote } = req.params;
+
+    const { id } = req.params;
+
     const { id_medicamento, numero_lote, fecha_fabricacion, fecha_vencimiento, cantidad_inicial, cantidad_actual, id_almacen, precio_compra_lote } = req.body;
 
     try {
-        const lote = await Lotes.findByPk(id_lote);
+
+        const lote = await Lotes.findByPk(id);
+
         if (!lote) {
             return res.status(404).json({ error: 'Lote no encontrado' });
         }
+      
 
         lote.id_medicamento = id_medicamento;
         lote.numero_lote = numero_lote;
@@ -79,7 +84,7 @@ const updateLote = async (req, res) => {
 // Eliminar un lote por ID
 const deleteLote = async (req, res) => {
     const { id_lote } = req.params;
-    
+
     try {
         const lote = await Lotes.findByPk(id_lote);
         if (!lote) {
