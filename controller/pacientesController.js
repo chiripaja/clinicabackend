@@ -31,7 +31,17 @@ const getPacienteById = async (req, res) => {
 
 // Crear un nuevo paciente
 const createPaciente = async (req, res) => {
-  const { NroDocumento, ...restoDatos } = req.body;
+  const {IdDocIdentidad,
+    ApellidoPaterno,
+    ApellidoMaterno,
+    PrimerNombre,
+    SegundoNombre,
+    FechaNacimiento,
+    NroDocumento,
+    Telefono,
+    DireccionDomicilio,
+    IdTipoSexo,
+    IdEstadoCivil} = req.body;
 
   try {
     // Validar que el NroDocumento sea único
@@ -41,17 +51,37 @@ const createPaciente = async (req, res) => {
       return res.status(400).json({ error: 'El número de documento ya está registrado' });
     }
 
-    const nuevoPaciente = await Pacientes.create({ NroDocumento, ...restoDatos });
+    const nuevoPaciente = await Pacientes.create({ IdDocIdentidad,
+      ApellidoPaterno,
+      ApellidoMaterno,
+      PrimerNombre,
+      SegundoNombre,
+      FechaNacimiento,
+      NroDocumento,
+      Telefono,
+      DireccionDomicilio,
+      IdTipoSexo,
+      IdEstadoCivil });
     res.status(201).json(nuevoPaciente);
   } catch (error) {
     res.status(500).json({ error: 'Error al crear el paciente' });
-  }
+  }/**/
 };
 
 // Actualizar un paciente
 const updatePaciente = async (req, res) => {
   const { id } = req.params;
-  const { NroDocumento, ...restoDatos } = req.body;
+  const {IdDocIdentidad,
+    ApellidoPaterno,
+    ApellidoMaterno,
+    PrimerNombre,
+    SegundoNombre,
+    FechaNacimiento,
+    NroDocumento,
+    Telefono,
+    DireccionDomicilio,
+    IdTipoSexo,
+    IdEstadoCivil} = req.body;
 
   try {
     const paciente = await Pacientes.findByPk(id);
@@ -60,16 +90,21 @@ const updatePaciente = async (req, res) => {
       return res.status(404).json({ error: 'Paciente no encontrado' });
     }
 
-    // Validar si el NroDocumento ya existe (excepto el actual)
-    if (NroDocumento && NroDocumento !== paciente.NroDocumento) {
-      const existeOtro = await Pacientes.findOne({ where: { NroDocumento } });
+    await paciente.update({
+      IdDocIdentidad,
+    ApellidoPaterno,
+    ApellidoMaterno,
+    PrimerNombre,
+    SegundoNombre,
+    FechaNacimiento,
+    NroDocumento,
+    Telefono,
+    DireccionDomicilio,
+    IdTipoSexo,
+    IdEstadoCivil
+  });
 
-      if (existeOtro) {
-        return res.status(400).json({ error: 'El número de documento ya está registrado' });
-      }
-    }
-
-    await paciente.update({ NroDocumento, ...restoDatos });
+ 
     res.status(200).json(paciente);
   } catch (error) {
     res.status(500).json({ error: 'Error al actualizar el paciente' });

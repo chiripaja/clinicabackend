@@ -5,7 +5,8 @@ const { sequelize } = require('../sequelize/sequelize');
 const Pacientes=sequelize.define('Pacientes',{
     IdPaciente: {
         type: DataTypes.INTEGER,
-        primaryKey: true
+        primaryKey: true,
+        autoIncrement: true,
       },
       
       IdDocIdentidad: DataTypes.INTEGER,
@@ -24,7 +25,11 @@ const Pacientes=sequelize.define('Pacientes',{
       IdEstadoCivil: DataTypes.INTEGER,
       IdPaisDomicilio: DataTypes.INTEGER,
       IdDistritoDomicilio: DataTypes.INTEGER,
-      idestadopaciente:DataTypes.INTEGER
+      idestadopaciente:{
+        type: DataTypes.TINYINT(1), // Define como TINYINT de un bit
+        allowNull: false,
+        defaultValue: 1, // Valor por defecto: 1
+      }
 },{
     tableName: 'Pacientes'
 })
