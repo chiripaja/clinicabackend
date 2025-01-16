@@ -129,10 +129,34 @@ const deletePaciente = async (req, res) => {
   }
 };
 
+const buscarnrodoc = async (req, res) => {
+  const { nroDocumento } = req.params; // Extraer el parámetro nroDocumento de la URL
+
+  if (!nroDocumento) {
+    return res.status(400).json({ message: 'Número de documento es requerido' });
+  }
+
+  try {
+    const paciente = await Pacientes.findOne({
+      where: { NroDocumento: nroDocumento }, // Buscar por el campo NroDocumento
+    });
+
+    if (paciente) {
+      res.json(paciente); // Enviar los datos del paciente si se encuentra
+    } else {
+      res.status(404).json({ message: 'Paciente no encontrado' });
+    }
+  } catch (error) {
+    console.error('Error al buscar paciente:', error);
+    res.status(500).json({ message: 'Error del servidor' });
+  }
+};
+
 module.exports = {
   getAllPacientes,
   getPacienteById,
   createPaciente,
   updatePaciente,
   deletePaciente,
+  buscarnrodoc
 };
