@@ -1,10 +1,12 @@
+// host + /api/atenciones
 const express = require('express');
 const router = express.Router();
 
 const { getAllAtenciones, getAtencionById,
     createAtencion,
     updateAtencion,
-    deleteAtencion, } = require('../controller/atencionController');
+    deleteAtencion,
+    getAtencionsByFechasAndIdservicio, } = require('../controller/atencionController');
 
 // Obtener todas las atenciones activas
 router.get('/', getAllAtenciones);
@@ -20,5 +22,5 @@ router.put('/:id', updateAtencion);
 
 // Borrar lógicamente una atención
 router.delete('/:id', deleteAtencion);
-
+router.post('/buscar', getAtencionsByFechasAndIdservicio);
 module.exports = router;

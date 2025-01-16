@@ -1,5 +1,7 @@
 const { DataTypes } = require('sequelize');
 const { sequelize } = require('../sequelize/sequelize');
+const Servicios = require('./Servicios');
+const Pacientes = require('./Paciente');
 
 
 
@@ -22,5 +24,17 @@ const Atenciones=sequelize.define('Atenciones',{
     tableName: 'Atenciones',
     timestamps: false 
 })
+
+
+Atenciones.belongsTo(Servicios, {
+    foreignKey: 'IdServicioIngreso', // Clave foránea en Atenciones
+    targetKey: 'id_servicio', // Clave primaria en Servicios
+
+});
+
+Atenciones.belongsTo(Pacientes, {
+    foreignKey: 'IdPaciente',
+    targetKey: 'IdPaciente'
+});
 
 module.exports=Atenciones

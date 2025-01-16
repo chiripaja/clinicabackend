@@ -3,6 +3,7 @@ const { sequelize } = require('../sequelize/sequelize');
 
 
 
+
 const Servicios=sequelize.define('Servicios',{
     id_servicio: {
         type: DataTypes.INTEGER,
@@ -14,5 +15,7 @@ const Servicios=sequelize.define('Servicios',{
     tableName: 'Servicios',
     timestamps: false 
 })
+
+
 
 module.exports=Servicios
