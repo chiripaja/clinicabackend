@@ -1,6 +1,10 @@
 // Importa el modelo de Lotes
 
 const Lotes = require("../model/Lotes");
+const Medicamentos = require("../model/Medicamentos");
+const Movimientos = require("../model/Movimientos");
+const Stock = require("../model/Stock");
+const { sequelize } = require("../sequelize/sequelize");
 
 // Obtener todos los lotes
 const getAllLotes = async (req, res) => {
@@ -27,23 +31,119 @@ const getLoteById = async (req, res) => {
 };
 
 // Crear un nuevo lote
-const createLote = async (req, res) => {
-    const { id_medicamento, numero_lote, fecha_fabricacion, fecha_vencimiento, cantidad_inicial, cantidad_actual, id_almacen, precio_compra_lote } = req.body;
+const createLote_back = async (req, res) => {
+    const { id_medicamento, numero_lote, fecha_fabricacion, fecha_vencimiento, cantidad_ingreso, id_almacen, precio_compra_lote,id_proveedor,observaciones } = req.body;
+    const transaction = await sequelize.transaction();
 
     try {
+        const medicamentos=await Medicamentos.findByPk(id_medicamento)
+        
+       const newLote = await Lotes.create({
+            id_medicamento,
+            numero_lote,
+            fecha_fabricacion,
+            fecha_vencimiento,
+            cantidad_ingreso,
+            id_almacen,
+            precio_compra_lote,
+            observaciones,
+            id_proveedor
+            
+        });
+        const newidlotegenerado = newLote.id_lote;
+        
+       
+        
+        const nuevoMovimiento = await Movimientos.create({
+            id_medicamento:id_medicamento,
+            id_lote:newidlotegenerado,
+            id_almacen,
+            tipo_movimiento:'ENTRADA',
+            cantidad:cantidad_ingreso,
+            precio_venta:medicamentos.precio_venta,
+            precio_compra:medicamentos.precio_compra,
+            observaciones,
+            id_proveedor,
+            usuario_responsable:1
+        });
+        res.status(200).json( nuevoMovimiento );
+        /* 
+        res.status(201).json({ message: 'Lote creado exitosamente', data: newLote });*/
+    } catch (error) {
+        res.status(500).json({ error: 'Error al crear el lote', details: error.message });
+    }
+};
+
+const createLote = async (req, res) => {
+    const { id_medicamento, numero_lote, fecha_fabricacion, fecha_vencimiento, cantidad_ingreso, id_almacen, precio_compra_lote, id_proveedor, observaciones } = req.body;
+
+    const transaction = await sequelize.transaction();
+
+    try {
+        // Verificar si el medicamento existe
+        const medicamento = await Medicamentos.findByPk(id_medicamento);
+        if (!medicamento) {
+            return res.status(404).json({ error: 'Medicamento no encontrado' });
+        }
+
+        // Crear el nuevo lote
         const newLote = await Lotes.create({
             id_medicamento,
             numero_lote,
             fecha_fabricacion,
             fecha_vencimiento,
-            cantidad_inicial,
-            cantidad_actual,
+            cantidad_ingreso,
+            cantidad_actual:cantidad_ingreso,
             id_almacen,
-            precio_compra_lote
+            precio_compra_lote,
+            observaciones,
+            id_proveedor
+        }, { transaction });
+
+        const newidlotegenerado = newLote.id_lote;
+
+        // Registrar el movimiento de entrada
+        const nuevoMovimiento = await Movimientos.create({
+            id_medicamento,
+            id_lote: newidlotegenerado,
+            id_almacen,
+            tipo_movimiento: 'ENTRADA',
+            cantidad: cantidad_ingreso,
+            precio_venta: medicamento.precio_venta,
+            precio_compra: precio_compra_lote, // Usar el precio de compra del lote
+            observaciones,
+            id_proveedor,
+            usuario_responsable: 1 // Cambiar por el ID del usuario autenticado
+        }, { transaction });
+
+        // Actualizar el stock
+        const stockExistente = await Stock.findOne({
+            where: { id_medicamento, id_almacen },
+            transaction
         });
 
-        res.status(201).json({ message: 'Lote creado exitosamente', data: newLote });
+        if (stockExistente) {
+            // Si existe, actualizar la cantidad disponible
+            stockExistente.cantidad_disponible += cantidad_ingreso;
+            await stockExistente.save({ transaction });
+        } else {
+            // Si no existe, crear un nuevo registro de stock
+            await Stock.create({
+                id_medicamento,
+                id_almacen,
+                cantidad_disponible: cantidad_ingreso
+            }, { transaction });
+        }
+
+        // Confirmar la transacción
+        await transaction.commit();
+
+        // Respuesta exitosa
+        res.status(201).json({ message: 'Lote creado exitosamente', lote: newLote, movimiento: nuevoMovimiento });
     } catch (error) {
+        // Revertir la transacción en caso de error
+        await transaction.rollback();
+        console.error(error);
         res.status(500).json({ error: 'Error al crear el lote', details: error.message });
     }
 };
@@ -53,7 +153,7 @@ const updateLote = async (req, res) => {
 
     const { id } = req.params;
 
-    const { id_medicamento, numero_lote, fecha_fabricacion, fecha_vencimiento, cantidad_inicial, cantidad_actual, id_almacen, precio_compra_lote } = req.body;
+    const { id_medicamento, numero_lote, fecha_fabricacion, fecha_vencimiento, cantidad_ingreso, cantidad_actual, id_almacen, precio_compra_lote } = req.body;
 
     try {
 
@@ -68,7 +168,7 @@ const updateLote = async (req, res) => {
         lote.numero_lote = numero_lote;
         lote.fecha_fabricacion = fecha_fabricacion;
         lote.fecha_vencimiento = fecha_vencimiento;
-        lote.cantidad_inicial = cantidad_inicial;
+        lote.cantidad_ingreso = cantidad_ingreso;
         lote.cantidad_actual = cantidad_actual;
         lote.id_almacen = id_almacen;
         lote.precio_compra_lote = precio_compra_lote;
@@ -83,10 +183,10 @@ const updateLote = async (req, res) => {
 
 // Eliminar un lote por ID
 const deleteLote = async (req, res) => {
-    const { id_lote } = req.params;
+    const { id } = req.params;
 
     try {
-        const lote = await Lotes.findByPk(id_lote);
+        const lote = await Lotes.findByPk(id);
         if (!lote) {
             return res.status(404).json({ error: 'Lote no encontrado' });
         }

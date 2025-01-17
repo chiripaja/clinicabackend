@@ -13,10 +13,12 @@ const Lotes = sequelize.define('Lotes', {
     numero_lote: DataTypes.STRING,
     fecha_fabricacion : DataTypes.DATE,
     fecha_vencimiento: DataTypes.DATE,
-    cantidad_inicial: DataTypes.INTEGER,
-    cantidad_actual: DataTypes.INTEGER,
+    cantidad_ingreso: DataTypes.INTEGER,//cantidad ingresada
+    cantidad_actual: DataTypes.INTEGER,//cantidad del lote en tiempo real
     id_almacen : DataTypes.INTEGER,
-    precio_compra_lote:DataTypes.DOUBLE
+    precio_compra_lote:DataTypes.DOUBLE,
+    id_proveedor :DataTypes.INTEGER,
+    observaciones:DataTypes.STRING,
 }, {
     tableName: 'Lotes'
 })

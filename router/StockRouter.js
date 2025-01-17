@@ -1,3 +1,4 @@
+// host + /api/stock
 const express = require('express');
 
 const { getAllStock, getStockById,

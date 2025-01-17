@@ -1,10 +1,12 @@
+const Almacen = require("../model/Almacen");
+const Medicamentos = require("../model/Medicamentos");
 const Stock = require("../model/Stock");
 
 
 // Obtener todos los registros de stock
 const getAllStock = async (req, res) => {
     try {
-        const stock = await Stock.findAll();
+        const stock = await Stock.findAll({include:[Medicamentos,Almacen]});
         res.status(200).json(stock);
     } catch (error) {
         res.status(500).json({ error: 'Error al obtener el stock', details: error.message });
