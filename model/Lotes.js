@@ -1,5 +1,7 @@
 const { DataTypes } = require('sequelize');
 const { sequelize } = require('../sequelize/sequelize');
+const Medicamentos = require('./Medicamentos');
+const Almacen = require('./Almacen');
 
 
 
@@ -24,3 +26,12 @@ const Lotes = sequelize.define('Lotes', {
 })
 
 module.exports = Lotes
+
+Lotes.belongsTo(Medicamentos, {
+    foreignKey: 'id_medicamento', 
+    targetKey: 'id_medicamento', 
+});
+Lotes.belongsTo(Almacen, {
+    foreignKey: 'id_almacen', 
+    targetKey: 'id', 
+});

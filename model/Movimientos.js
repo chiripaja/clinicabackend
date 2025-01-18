@@ -1,6 +1,9 @@
 const { DataTypes, DOUBLE } = require('sequelize');
 const { sequelize } = require('../sequelize/sequelize');
-
+const Medicamentos = require('./Medicamentos');
+const Lotes = require('./Lotes');
+const Almacen = require('./Almacen');
+const Proveedor = require('./Proveedores');
 
 
 const Movimientos = sequelize.define('Movimientos', {
@@ -24,3 +27,23 @@ const Movimientos = sequelize.define('Movimientos', {
 })
 
 module.exports = Movimientos
+
+Movimientos.belongsTo(Medicamentos, {
+    foreignKey: 'id_medicamento', 
+    targetKey: 'id_medicamento', 
+});
+
+Movimientos.belongsTo(Lotes, {
+    foreignKey: 'id_lote', 
+    targetKey: 'id_lote', 
+});
+
+Movimientos.belongsTo(Almacen, {
+    foreignKey: 'id_almacen', 
+    targetKey: 'id', 
+});
+
+Movimientos.belongsTo(Proveedor, {
+    foreignKey: 'id_proveedor', 
+    targetKey: 'id_proveedor', 
+});

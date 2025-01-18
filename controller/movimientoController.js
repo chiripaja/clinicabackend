@@ -1,9 +1,20 @@
+const Almacen = require("../model/Almacen");
+const Lotes = require("../model/Lotes");
+const Medicamentos = require("../model/Medicamentos");
 const Movimientos = require("../model/Movimientos");
+const Proveedor = require("../model/Proveedores");
 
 // Obtener todos los movimientos
 const getAllMovimientos = async (req, res) => {
     try {
-        const movimientos = await Movimientos.findAll();
+        const movimientos = await Movimientos.findAll({
+            include:[
+                Almacen,
+                Medicamentos,
+                Lotes,
+                Proveedor
+            ]
+        });
         res.status(200).json(movimientos);
     } catch (error) {
         res.status(500).json({ error: 'Error al obtener los movimientos', details: error.message });
