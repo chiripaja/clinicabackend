@@ -30,6 +30,7 @@ app.use('/api/stock',require('./router/StockRouter'));
 app.use('/api/servicios',require('./router/serviciosRoutes'));
 app.use('/api/atenciones',require('./router/atencionesRoutes'));
 app.use('/api/pacientes',require('./router/pacientesRoutes'));
+app.use('/api/recetas',require('./router/RecetaRoutes'));
 app.listen(process.env.PORT, () => {
   console.log(`Example app listening on port ${process.env.PORT}`)
 })
