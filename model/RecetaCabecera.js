@@ -1,5 +1,6 @@
 const { DataTypes } = require('sequelize');
 const { sequelize } = require('../sequelize/sequelize');
+const RecetaDetalle = require('./RecetaDetalle');
 
 
 
@@ -17,4 +18,13 @@ const RecetaCabecera=sequelize.define('RecetaCabecera',{
     timestamps: false 
 })
 
+
+RecetaCabecera.hasMany(RecetaDetalle, {
+    foreignKey: 'idreceta',  // Clave foránea en RecetaDetalle
+    sourceKey: 'idreceta',   // Clave primaria en RecetaCabecera
+
+});
+
+
 module.exports=RecetaCabecera
+

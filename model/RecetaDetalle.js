@@ -1,5 +1,6 @@
 const { DataTypes } = require('sequelize');
 const { sequelize } = require('../sequelize/sequelize');
+const Medicamentos = require('./Medicamentos');
 
 
 
@@ -17,10 +18,17 @@ const RecetaDetalle=sequelize.define('RecetaDetalle',{
     iddiagnostico:DataTypes.INTEGER,
     idestadodetalle:DataTypes.INTEGER,
     idtiporecetadetalle:DataTypes.INTEGER,//1 farmacia 2 procedimientos
+    idpuntocarga:DataTypes.INTEGER,//1 punto de carga farmacia
     observaciones:DataTypes.STRING,
 },{
     tableName: 'RecetaDetalle',
     timestamps: false 
 })
 
+RecetaDetalle.belongsTo(Medicamentos, {
+    foreignKey: 'idItem',  
+    targetKey: 'id_medicamento'   
+});
+
 module.exports=RecetaDetalle
+

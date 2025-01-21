@@ -1,7 +1,31 @@
 const {response}=require('express');
 const RecetaCabecera = require('../model/RecetaCabecera');
 const RecetaDetalle = require('../model/RecetaDetalle');
+const Medicamentos = require('../model/Medicamentos');
 
+const findByIdreceta=async(req,res=response)=>{
+  try {
+    const { id } = req.params;
+    const data=await RecetaCabecera.findOne(
+      {
+        include:[
+          {
+            model:RecetaDetalle,
+            include:[Medicamentos]
+          }
+          
+        ],
+        where: { idreceta: id}
+      }
+    )
+    if (!data) {
+      return res.status(404).json({ error: 'Receta no encontrada.' });
+    }
+    res.status(200).json(data);
+  } catch (error) {
+    res.status(500).json({ error: 'Error al obtener la receta' });
+  }
+}
 
 
 const createRecetaFarmacia = async (req, res = response) => {
@@ -32,6 +56,7 @@ const createRecetaFarmacia = async (req, res = response) => {
           iddiagnostico: detalle.iddiagnostico || null,
           idestadodetalle: detalle.idestadodetalle || 1, // Estado predeterminado
           idtiporecetadetalle: 1, // Según la lógica (1 para farmacia)
+          idpuntocarga:1,//
           observaciones: detalle.observaciones || '',
         }))
       );
@@ -58,5 +83,6 @@ const createRecetaFarmacia = async (req, res = response) => {
 
 
 module.exports={
-    createRecetaFarmacia
+    createRecetaFarmacia,
+    findByIdreceta
 }
